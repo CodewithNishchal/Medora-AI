@@ -5,6 +5,7 @@ import { Poppins } from 'next/font/google';
 import InputHub from '@/components/inputHub/inputHub';
 import OutputSection from '@/components/outputSection/outputSection';
 import Footer from '@/components/footer/footer';
+import Sidebar from '@/components/sidebar/sidebar';
 
 // Load the font
 const poppins = Poppins({
@@ -40,45 +41,7 @@ export default function HealthDashboard() {
     <div className={`${poppins.className} flex h-screen w-full overflow-hidden bg-[linear-gradient(135deg,#f5f7fa_0%,#c3cfe2_100%)] text-[#2d3436]`}>
       
       {/* --- SIDEBAR --- */}
-      <nav className="flex w-[90px] flex-col items-center justify-between border-r border-white/20 bg-transparent py-8 backdrop-blur-md z-50 h-full">
-        {/* Top: Logo */}
-        <div className="flex h-[70px] w-[45px] flex-col items-center justify-center rounded-2xl border border-white/30 bg-gradient-to-b from-[#4facfe] to-[#00f2fe] text-white shadow-[0_8px_12px_rgba(79,172,254,0.3)] shrink-0">
-          <i className="fa-solid fa-plus mb-1 text-xl"></i>
-          <i className="fa-solid fa-wave-square text-[10px]"></i>
-        </div>
-
-        {/* Center: Nav Links */}
-        <div className="flex flex-1 w-full flex-col items-center justify-center">
-          <ul className="flex flex-col items-center gap-4 relative">
-            <div className="absolute left-1/2 top-2 bottom-2 w-[1px] -translate-x-1/2 bg-[#a4b0be]/30 -z-10"></div>
-            
-            <li className="group flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border-2 border-white bg-gradient-to-b from-[#4facfe] to-[#00f2fe] text-white shadow-[0_8px_15px_rgba(0,242,254,0.3)] transition-transform hover:scale-110">
-              <i className="fa-solid fa-border-all text-lg"></i>
-            </li>
-            <li className="group flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-white/60 text-[#2d3436] shadow-sm transition-transform hover:scale-110 hover:bg-white hover:text-[#2563eb]">
-              <i className="fa-regular fa-calendar-check text-xl"></i>
-            </li>
-            <li className="group flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-white/60 text-[#2d3436] shadow-sm transition-transform hover:scale-110 hover:bg-white hover:text-[#2563eb]">
-              <i className="fa-solid fa-chart-pie text-xl"></i>
-            </li>
-            <li className="group flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-white/60 text-[#2d3436] shadow-sm transition-transform hover:scale-110 hover:bg-white hover:text-[#2563eb]">
-              <i className="fa-regular fa-file-lines text-xl"></i>
-            </li>
-            <li className="group flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-white/60 text-[#2d3436] shadow-sm transition-transform hover:scale-110 hover:bg-white hover:text-[#2563eb]">
-              <i className="fa-solid fa-gear text-xl"></i>
-            </li>
-          </ul>
-        </div>
-
-        {/* Bottom: Profile */}
-        <div className="shrink-0">
-          <img 
-            src="https://images.unsplash.com/photo-1599566150163-29194dcaad36?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" 
-            alt="User" 
-            className="h-12 w-12 rounded-full border-2 border-white object-cover shadow-md"
-          />
-        </div>
-      </nav>
+        <Sidebar />
 
       {/* --- MAIN CONTENT --- */}
       <main className="flex-1 overflow-y-auto px-10 py-8">
