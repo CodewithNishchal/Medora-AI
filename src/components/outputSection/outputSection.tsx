@@ -32,6 +32,7 @@ import {
 
 // --- STYLES ---
 const glassCard = "bg-[rgba(255,255,255,0.18)] backdrop-blur-[0.9px] border border-[rgba(255,255,255,0.76)] shadow-[0_8px_30px_rgba(0,0,0,0.04)] rounded-2xl";
+const highGlass = "bg-[rgba(255,255,255,0.95)] backdrop-blur-xl border border-white/60 shadow-[0_8px_30px_rgba(0,0,0,0.04)] rounded-2xl";
 const glassBtn = "flex-1 flex items-center justify-center gap-3 py-3.5 px-6 rounded-xl transition-all font-bold shadow-sm duration-300 whitespace-nowrap text-base";
 
 const activeBtn = "bg-gradient-to-r from-[#4facfe] to-[#00f2fe] text-white shadow-[0_4px_15px_rgba(0,242,254,0.3)] translate-y-[-2px]";
@@ -182,10 +183,10 @@ const OutputSection = ({ isVisible = true }) => {
   };
 
   return (
-    <div className="w-full text-slate-800 animate-in fade-in duration-700">
+    <div className="w-full text-slate-800 animate-enter fade-in duration-700">
       
-      {/* 1. Header Area */}
-      <div className={`${glassCard} p-6 mb-6`}>
+      {/* 1. Header Area (Slide Down: delay-0ms) */}
+      <div className={`${glassCard} p-6 mb-6 animate-enter fade-in-down`} style={{ animationDelay: '0ms' }}>
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           
           {/* Left Side: Title & Model Info */}
@@ -217,7 +218,7 @@ const OutputSection = ({ isVisible = true }) => {
                 <div className="text-sm font-bold text-slate-800 font-mono whitespace-nowrap">{clinicalNote.patientInfo.id}</div>
              </div>
              <div className="h-8 w-px bg-slate-300/50 shrink-0"></div>
-             <div className="min-w-0 flex-1"> {/* flex-1 allows it to take remaining space */}
+             <div className="min-w-0 flex-1">
                 <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Complaint</div>
                 <div className="text-sm font-bold text-red-500 truncate" title={clinicalNote.patientInfo.chiefComplaint}>
                   {clinicalNote.patientInfo.chiefComplaint}
@@ -227,12 +228,9 @@ const OutputSection = ({ isVisible = true }) => {
 
         </div>
       </div>
-      {/* 2. Navigation Tabs (ROUNDED CAPSULE, STICKY, THICK GLASS) */}
-      {/* - rounded-2xl: Gives it the capsule/pill shape
-          - border: Full border to define the rounded shape
-          - bg-[rgba(255,255,255,0.85)]: High opacity to obscure text behind
-      */}
-      <div className="sticky top-0 z-50 bg-[rgba(255,255,255,0.18)] backdrop-blur-[3.9px] border border-white/60 shadow-sm py-4 mb-6 -mx-6 px-6 rounded-2xl transition-all duration-300">
+
+      {/* 2. Navigation Tabs (Fade In: delay-100ms) */}
+      <div className="sticky top-0 z-50 bg-[rgba(255,255,255,0.18)] backdrop-blur-[3.9px] border border-white/60 shadow-sm py-4 mb-6 -mx-6 px-6 rounded-2xl transition-all duration-300 animate-enter fade-in-down" style={{ animationDelay: '100ms' }}>
         <div className="flex gap-3 overflow-x-auto no-scrollbar">
           {[
             { id: 'summary', label: 'Clinical Summary', icon: FileText },
@@ -254,14 +252,14 @@ const OutputSection = ({ isVisible = true }) => {
         </div>
       </div>
 
-      {/* 3. Content Area */}
+      {/* 3. Content Area (Staggered Animation based on Tab) */}
       
       {/* --- TAB: SUMMARY --- */}
       {activeTab === 'summary' && (
         <div className="flex flex-col gap-6">
           
-          {/* Top Row: AI Summary & Risk Scores */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Grid 1: Summary & Risk (Slide Up: delay-200ms) */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 animate-enter fade-in-up" style={{ animationDelay: '200ms' }}>
              <div className={`${glassCard} p-8 lg:col-span-2 relative overflow-hidden`}>
                 <div className="absolute top-0 right-0 w-64 h-64 bg-purple-500/5 rounded-full blur-3xl -z-10"></div>
                 <h3 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
@@ -272,7 +270,6 @@ const OutputSection = ({ isVisible = true }) => {
                 </div>
              </div>
 
-             {/* Risk Score Widget */}
              <div className={`${glassCard} p-6 flex flex-col justify-between`}>
                 <h3 className="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
                    <TrendingUp className="w-5 h-5 text-orange-500" /> Risk Stratification
@@ -295,8 +292,8 @@ const OutputSection = ({ isVisible = true }) => {
              </div>
           </div>
 
-          {/* Vitals Strip */}
-          <div className={`${glassCard} p-5`}>
+          {/* Grid 2: Vitals (Slide Up: delay-300ms) */}
+          <div className={`${glassCard} p-5 animate-enter fade-in-up`} style={{ animationDelay: '300ms' }}>
              <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4 flex items-center gap-2">
                 <Activity className="w-4 h-4 text-[#00f2fe]" /> Extracted Vitals
              </h3>
@@ -315,8 +312,8 @@ const OutputSection = ({ isVisible = true }) => {
              </div>
           </div>
 
-          {/* Bottom Grid: Note & Red Flags */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Grid 3: Note & Flags (Slide Up: delay-400ms) */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-enter fade-in-up" style={{ animationDelay: '400ms' }}>
             <div className={`${glassCard} p-6 h-full flex flex-col`}>
               <h3 className="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
                 <FileText className="w-5 h-5 text-[#00f2fe]" /> Original Clinical Note
@@ -347,10 +344,10 @@ const OutputSection = ({ isVisible = true }) => {
         </div>
       )}
 
-      {/* --- TAB: ENTITIES --- */}
+      {/* --- TAB: ENTITIES (Staggered Sides) --- */}
       {activeTab === 'entities' && (
          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className={`${glassCard} p-6`}>
+            <div className={`${glassCard} p-6 animate-enter fade-in-left`} style={{ animationDelay: '200ms' }}>
                <h3 className="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
                   <Pill className="w-5 h-5 text-purple-500" /> Current Medications
                </h3>
@@ -367,7 +364,7 @@ const OutputSection = ({ isVisible = true }) => {
                </div>
             </div>
 
-            <div className="space-y-6">
+            <div className="space-y-6 animate-enter zoom-in" style={{ animationDelay: '300ms' }}>
                <div className={`${glassCard} p-6`}>
                   <h3 className="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
                      <AlertTriangle className="w-5 h-5 text-red-500" /> Risk Factors
@@ -398,12 +395,11 @@ const OutputSection = ({ isVisible = true }) => {
          </div>
       )}
 
-      {/* --- TAB: ACTION PLAN --- */}
+      {/* --- TAB: ACTION PLAN (Waterfall) --- */}
       {activeTab === 'action' && (
          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2 space-y-6">
-               {/* Immediate Actions */}
-               <div className="bg-gradient-to-r from-red-500 to-orange-500 rounded-2xl p-6 text-white shadow-lg">
+               <div className="bg-gradient-to-r from-red-500 to-orange-500 rounded-2xl p-6 text-white shadow-lg animate-enter zoom-in" style={{ animationDelay: '200ms' }}>
                   <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
                      <Zap className="w-5 h-5" /> Immediate Actions (STAT)
                   </h3>
@@ -422,8 +418,7 @@ const OutputSection = ({ isVisible = true }) => {
                   </div>
                </div>
 
-               {/* Labs & Referrals */}
-               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-enter fade-in-up" style={{ animationDelay: '300ms' }}>
                   <div className={`${glassCard} p-6`}>
                      <h3 className="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
                         <FlaskConical className="w-5 h-5 text-blue-500" /> Labs
@@ -463,8 +458,7 @@ const OutputSection = ({ isVisible = true }) => {
                </div>
             </div>
 
-            {/* Progress Bar Side Panel */}
-            <div className={`${glassCard} p-6 h-fit`}>
+            <div className={`${glassCard} p-6 h-fit animate-enter fade-in-left`} style={{ animationDelay: '400ms' }}>
                <h3 className="text-lg font-bold text-slate-800 mb-2">Workflow Status</h3>
                <div className="text-4xl font-bold text-[#00f2fe] mb-1">
                   {Object.values(checkedActions).filter(Boolean).length}
@@ -478,11 +472,10 @@ const OutputSection = ({ isVisible = true }) => {
          </div>
       )}
 
-      {/* --- TAB: DIAGNOSIS (Unchanged) --- */}
+      {/* --- TAB: DIAGNOSIS (Smooth Fade) --- */}
       {activeTab === 'diagnosis' && (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 relative">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 relative animate-enter fade-in" style={{ animationDelay: '200ms' }}>
           <div className="lg:col-span-4 h-full">
-             {/* Adjusted to top-28 for taller header */}
              <div className={`${glassCard} p-6 sticky top-28 max-h-[80vh] overflow-y-auto`}>
                 <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4 flex items-center gap-2">
                    <FileText className="w-4 h-4 text-[#00f2fe]" /> Live Context
@@ -527,7 +520,7 @@ const OutputSection = ({ isVisible = true }) => {
                   {expandedEvidence[diag.id] ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />} View Evidence Sources ({diag.evidence.length})
                 </div>
                 {expandedEvidence[diag.id] && (
-                  <div className="p-6 bg-slate-50/80 space-y-3 animate-in slide-in-from-top-2">
+                  <div className="p-6 bg-slate-50/80 space-y-3 animate-enter fade-in-down">
                     {diag.evidence.map((ev, i) => (
                       <div key={i} className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm cursor-pointer hover:border-[#4facfe] transition-all" onClick={() => setHighlightedText(ev.keywords)}>
                         <div className="flex justify-between items-start mb-2">
@@ -553,9 +546,9 @@ const OutputSection = ({ isVisible = true }) => {
         </div>
       )}
 
-      {/* --- TAB: SYMPTOMS (Unchanged) --- */}
+      {/* --- TAB: SYMPTOMS (Smooth Fade) --- */}
       {activeTab === 'symptoms' && (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 animate-enter fade-in" style={{ animationDelay: '200ms' }}>
           <div className="lg:col-span-2 space-y-6">
             <div className={`${glassCard} p-6`}>
               <h3 className="text-lg font-bold text-green-700 mb-4 flex items-center gap-2"><CheckCircle className="w-5 h-5" /> Present Symptoms</h3>
@@ -581,7 +574,7 @@ const OutputSection = ({ isVisible = true }) => {
             <div className={`${glassCard} p-6 sticky top-28 text-center`}>
               <h3 className="text-lg font-bold text-slate-800 mb-6 flex items-center justify-center gap-2"><Heart className="w-5 h-5 text-red-500" /> Organ Impact Map</h3>
               {selectedSymptom ? (
-                <div className="animate-in fade-in zoom-in duration-300">
+                <div className="animate-enter zoom-in">
                   <div className="bg-blue-50 border border-blue-100 rounded-xl p-3 mb-6 inline-block">
                     <span className="text-xs font-bold text-[#4facfe] uppercase block mb-1">Selected Focus</span>
                     <span className="text-lg font-bold text-[#00f2fe]">{selectedSymptom.symptom}</span>
@@ -608,7 +601,7 @@ const OutputSection = ({ isVisible = true }) => {
 
       {/* --- TAB: EVIDENCE (Unchanged) --- */}
       {activeTab === 'evidence' && (
-        <div className="space-y-4">
+        <div className="space-y-4 animate-enter fade-in" style={{ animationDelay: '200ms' }}>
            {differentialDiagnoses.map(diag => (
              <div key={diag.id} className={`${glassCard} p-6`}>
                <h3 className="text-lg font-bold text-slate-800 mb-4 border-b border-white/50 pb-2">{diag.condition}</h3>

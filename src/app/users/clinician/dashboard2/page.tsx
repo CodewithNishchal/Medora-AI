@@ -6,8 +6,8 @@ import InputHub from '@/components/inputHub/inputHub';
 import OutputSection from '@/components/outputSection/outputSection';
 import Footer from '@/components/footer/footer';
 import Sidebar from '@/components/sidebar/sidebar';
+import MedoraLoader from '@/components/medora_loader/medora_loader';
 
-// Load the font
 const poppins = Poppins({
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700'],
@@ -15,41 +15,35 @@ const poppins = Poppins({
 });
 
 export default function HealthDashboard() {
-  // State to track if analysis is complete
   const [hasAnalyzed, setHasAnalyzed] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  // The specific glass style you requested
   const glassStyle = "bg-[rgba(255,255,255,0.18)] rounded-[16px] shadow-[0_4px_30px_rgba(0,0,0,0.1)] backdrop-blur-[0.9px] border border-[rgba(255,255,255,0.76)]";
 
-  // Function to handle the transition
   const handleAnalyze = () => {
-    setIsAnalyzing(true);
-    // Simulate AI processing delay
+    setHasAnalyzed(true);
+    setIsLoading(true);
     setTimeout(() => {
-      setIsAnalyzing(false);
-      setHasAnalyzed(true);
-    }, 1500);
+      setIsLoading(false);
+    }, 3000); 
   };
 
-  // Function to go back to input
   const handleReset = () => {
     setHasAnalyzed(false);
+    setIsLoading(false);
   };
 
   return (
     <div className={`${poppins.className} flex h-screen w-full overflow-hidden bg-[linear-gradient(135deg,#f5f7fa_0%,#c3cfe2_100%)] text-[#2d3436]`}>
       
-      {/* --- SIDEBAR --- */}
         <Sidebar />
 
-      {/* --- MAIN CONTENT --- */}
       <main className="flex-1 overflow-y-auto px-10 py-8">
-        
         <div className="mx-auto max-w-[1400px] h-full flex flex-col">
 
-          {/* Header */}
-          <header className="mb-8 flex h-[60px] items-center justify-between shrink-0">
+          {/* Header (Slides Down) */}
+          <header className="mb-8 flex h-[60px] items-center justify-between shrink-0 animate-enter fade-in-down" style={{ animationDelay: '0ms' }}>
             <div>
               <h1 className="text-3xl font-semibold text-[#2d3436]">Good Morning, Ayoub!</h1>
               <p className="mt-1 text-sm text-[#636e72]">Monday, January 05, 2026 • Updated 10m ago</p>
@@ -78,26 +72,37 @@ export default function HealthDashboard() {
 
             {/* --- CONDITIONAL VIEW LOGIC --- */}
             {hasAnalyzed ? (
-              // --- VIEW 2: OUTPUT MODE ---
-              <div className="w-full flex flex-col gap-6 animate-in fade-in zoom-in-95 duration-500">
-                 <button onClick={handleReset} className="self-start text-sm font-semibold text-slate-500 hover:text-blue-600 flex items-center gap-2 mb-2 transition-colors">
-                    <i className="fa-solid fa-arrow-left"></i> Back to Input
-                 </button>
-                 <OutputSection isVisible={true} />
+              // OUTPUT MODE (Zoom In)
+              <div key="output" className="w-full flex flex-col gap-6 animate-enter zoom-in">
+                 
+                 {!isLoading && (
+                   <button onClick={handleReset} className="self-start text-sm font-semibold text-slate-500 hover:text-blue-600 flex items-center gap-2 mb-2 transition-colors animate-enter fade-in-left">
+                      <i className="fa-solid fa-arrow-left"></i> Back to Input
+                   </button>
+                 )}
+
+                 {isLoading ? (
+                   <div className="w-full bg-[rgba(255,255,255,0.18)] backdrop-blur-[0.9px] border border-white/60 shadow-xl rounded-3xl p-12 min-h-[600px] flex items-center justify-center animate-enter fade-in">
+                     <MedoraLoader />
+                   </div>
+                 ) : (
+                   <OutputSection isVisible={true} />
+                 )}
               </div>
             ) : (
-              // --- VIEW 1: INPUT MODE ---
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 animate-in fade-in slide-in-from-left-4 duration-500">
+              // INPUT MODE (Staggered Entry)
+              <div key="input" className="grid grid-cols-1 lg:grid-cols-12 gap-6">
                 
-                {/* LEFT: Input Hub */}
-                <div className="lg:col-span-8 flex flex-col">
+                {/* LEFT: Input Hub (Slides in from Left) */}
+                <div className="lg:col-span-8 flex flex-col animate-enter fade-in-left" style={{ animationDelay: '100ms' }}>
                     <InputHub onAnalyze={handleAnalyze} isAnalyzing={isAnalyzing} />
                 </div>
 
-                {/* RIGHT: System Vitals */}
+                {/* RIGHT: System Vitals (Staggered Zoom In) */}
                 <div className="lg:col-span-4 flex flex-col gap-6">
-                    {/* Temperature Card */}
-                    <div className={`flex flex-1 min-h-[160px] flex-col justify-between p-6 transition-transform hover:-translate-y-1 ${glassStyle}`}>
+                    
+                    {/* Vital 1 */}
+                    <div className={`flex flex-1 min-h-[160px] flex-col justify-between p-6 transition-transform hover:-translate-y-1 ${glassStyle} animate-enter zoom-in`} style={{ animationDelay: '200ms' }}>
                         <div className="mb-2 flex items-start gap-4">
                             <i className="fa-solid fa-temperature-half text-2xl text-[#ff7675] drop-shadow-sm"></i>
                             <div>
@@ -117,8 +122,8 @@ export default function HealthDashboard() {
                         </div>
                     </div>
 
-                    {/* Heart Rate Card */}
-                    <div className={`flex flex-1 min-h-[160px] flex-col justify-between p-6 transition-transform hover:-translate-y-1 ${glassStyle}`}>
+                    {/* Vital 2 */}
+                    <div className={`flex flex-1 min-h-[160px] flex-col justify-between p-6 transition-transform hover:-translate-y-1 ${glassStyle} animate-enter zoom-in`} style={{ animationDelay: '300ms' }}>
                         <div className="mb-2 flex items-start gap-4">
                             <i className="fa-solid fa-heart text-2xl text-[#d63031] drop-shadow-sm"></i>
                             <div>
@@ -138,8 +143,8 @@ export default function HealthDashboard() {
                         </div>
                     </div>
 
-                    {/* Glucose Card */}
-                    <div className={`flex flex-1 min-h-[160px] flex-col justify-between p-6 transition-transform hover:-translate-y-1 ${glassStyle}`}>
+                    {/* Vital 3 */}
+                    <div className={`flex flex-1 min-h-[160px] flex-col justify-between p-6 transition-transform hover:-translate-y-1 ${glassStyle} animate-enter zoom-in`} style={{ animationDelay: '400ms' }}>
                         <div className="mb-2 flex items-start gap-4">
                             <i className="fa-solid fa-viruses text-2xl text-[#e17055] drop-shadow-sm"></i>
                             <div>
@@ -162,10 +167,9 @@ export default function HealthDashboard() {
               </div>
             )}
 
-            {/* --- BOTTOM SECTION: Body Conditions (Rest) --- */}
-            {/* We keep this visible in Input Mode, but hide it in Output Mode to focus on results */}
+            {/* --- BOTTOM SECTION: Body Conditions (Slide Up) --- */}
             {!hasAnalyzed && (
-              <div className={`flex flex-col p-8 ${glassStyle}`}>
+              <div className={`flex flex-col p-8 ${glassStyle} animate-enter fade-in-up`} style={{ animationDelay: '500ms' }}>
                 <div className="mb-6">
                   <h2 className="text-xl font-bold text-[#2d3436]">Body Conditions</h2>
                   <span className="text-sm text-[#636e72]">124 Metrics Analyzed</span>
@@ -261,10 +265,9 @@ export default function HealthDashboard() {
 
           </div>
 
-        {/* Footer (Outside max-w container to stretch full width) */}
+        {/* Footer */}
         <Footer />
         </div>
-        
         
       </main>
     </div>
