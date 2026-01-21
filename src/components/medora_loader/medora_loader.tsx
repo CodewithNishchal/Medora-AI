@@ -1,5 +1,6 @@
 import React from 'react';
-import { Brain, Sparkles } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
+import Image from 'next/image';
 
 const MedoraLoader = () => {
   return (
@@ -17,12 +18,22 @@ const MedoraLoader = () => {
         {/* Ring 2: Fast Reverse Spinner (Inner Processing Layer) */}
         <div className="absolute inset-4 rounded-full border-4 border-transparent border-b-[#00f2fe] border-l-[#4facfe] animate-spin [animation-duration:1.5s] [animation-direction:reverse]"></div>
         
-        {/* Center: The AI Core (Pulsing Brain) */}
-        <div className="relative z-10 bg-gradient-to-br from-[#4facfe] to-[#00f2fe] w-16 h-16 rounded-2xl flex items-center justify-center shadow-[0_0_30px_rgba(0,242,254,0.5)] animate-bounce [animation-duration:2s]">
-           <Brain className="w-8 h-8 text-white drop-shadow-md" />
+        {/* Center: The AI Core (Your Custom Icon) */}
+        {/* Removed bg-white so the icon fills the space completely */}
+        <div className="relative z-10 w-20 h-20 rounded-full shadow-[0_0_30px_rgba(0,242,254,0.5)] animate-bounce [animation-duration:2s]">
            
-           {/* Tiny Sparkle Decoration */}
-           <div className="absolute -top-2 -right-2 bg-white rounded-full p-1 shadow-sm animate-ping [animation-duration:2s]">
+           {/* YOUR CUSTOM IMAGE - Now fills the container */}
+           <Image 
+             src="/images/medora-icon.png" 
+             alt="Medora Logo" 
+             fill 
+             // object-cover fills the space, rounded-full clips the square image to a circle
+             className="object-cover rounded-full"
+             priority
+           />
+           
+           {/* Tiny Sparkle Decoration - z-index added to stay on top */}
+           <div className="absolute z-20 -top-1 -right-1 bg-white rounded-full p-1 shadow-sm animate-ping [animation-duration:2s]">
               <Sparkles className="w-3 h-3 text-[#4facfe]" />
            </div>
         </div>
@@ -49,4 +60,4 @@ const MedoraLoader = () => {
   );
 };
 
-export default MedoraLoader;    
+export default MedoraLoader;
